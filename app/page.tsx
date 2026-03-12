@@ -185,7 +185,7 @@ export default function Home() {
                 value={busqueda}
                 onChange={(e) => {
                   setBusqueda(e.target.value);
-                  setFormData({ ...formData, artista: "" });
+                  setFormData({ ...formData, artista: e.target.value });
                   setDropdownAbierto(true);
                 }}
                 onFocus={() => setDropdownAbierto(true)}
@@ -262,6 +262,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Seguidores</label>
               <input
                 type="number"
+                min="0"
                 name="seguidores"
                 value={formData.seguidores}
                 onChange={handleChange}
@@ -272,6 +273,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Oyentes Mensuales</label>
               <input
                 type="number"
+                min="0"
                 name="oyentes_mensuales"
                 value={formData.oyentes_mensuales}
                 onChange={handleChange}
@@ -297,7 +299,7 @@ export default function Home() {
                 value={busquedaRecinto}
                 onChange={(e) => {
                   setBusquedaRecinto(e.target.value);
-                  setFormData({ ...formData, lugar: "" });
+                  setFormData({ ...formData, lugar: e.target.value });
                   setDropdownRecintoAbierto(true);
                 }}
                 onFocus={() => setDropdownRecintoAbierto(true)}
@@ -357,6 +359,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Capacidad del recinto</label>
               <input
                 type="number"
+                min="0"
                 name="capacidad_recinto"
                 value={formData.capacidad_recinto}
                 onChange={handleChange}
@@ -388,6 +391,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Precio Mínimo (MXN)</label>
               <input
                 type="number"
+                min="0"
                 name="precio_minimo"
                 value={formData.precio_minimo}
                 onChange={handleChange}
@@ -398,6 +402,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Precio Máximo (MXN)</label>
               <input
                 type="number"
+                min="0"
                 name="precio_maximo"
                 value={formData.precio_maximo}
                 onChange={handleChange}
@@ -408,6 +413,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Seguidores de Instagram</label>
               <input
                 type="number"
+                min="0"
                 name="seguidores_ig"
                 value={formData.seguidores_ig}
                 onChange={handleChange}
@@ -418,6 +424,7 @@ export default function Home() {
               <label className="block text-sm text-white/70 mb-1">Seguidores de Facebook</label>
               <input
                 type="number"
+                min="0"
                 name="seguidores_fb"
                 value={formData.seguidores_fb}
                 onChange={handleChange}
@@ -439,24 +446,37 @@ export default function Home() {
 
         {/* RESULTADO */}
         {resultado !== null && (
-          <div className="mt-6 p-6 rounded-2xl bg-green-500/10 border border-green-500/30 text-center animate-fadeIn">
-            <p className="text-sm uppercase tracking-widest text-green-300 mb-2">
-              Asistencia Estimada
-            </p>
-            <p className="text-4xl font-extrabold text-green-400">
-              {resultado.toLocaleString("es-MX")}
-            </p>
+          <div className="mt-6 rounded-2xl bg-white/5 border border-white/10 p-6 animate-fadeIn space-y-4">
 
+            {/* Número principal */}
+            <div className="flex justify-between items-baseline">
+              <p className="text-sm text-white/50">Asistencia estimada</p>
+              <p className="text-3xl font-bold text-white">{resultado.toLocaleString("es-MX")}</p>
+            </div>
+
+            {/* Barra de progreso */}
             {ocupacion !== null && (
-              <p className="text-green-200 mt-2">
-                Ocupación: {(ocupacion * 100).toFixed(1)}%
-              </p>
+              <div>
+                <div className="flex justify-between text-xs text-white/40 mb-2">
+                  <span>0</span>
+                  <span className="text-purple-300 font-medium">Ocupación: {(ocupacion * 100).toFixed(1)}%</span>
+                  <span>100%</span>
+                </div>
+                <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-purple-500 transition-all duration-700"
+                    style={{ width: `${Math.min((ocupacion * 100), 100).toFixed(1)}%` }}
+                  />
+                </div>
+              </div>
             )}
 
+            {/* Veredicto */}
             {veredicto && (
-              <p className="mt-2 text-xl font-bold text-purple-300">
-                {veredicto}
-              </p>
+              <div className="flex items-center justify-between bg-purple-600/20 border border-purple-500/30 rounded-xl px-4 py-3">
+                <span className="text-sm font-semibold text-purple-200">{veredicto}</span>
+                <span className="text-xs text-purple-400">predicción del modelo</span>
+              </div>
             )}
           </div>
         )}
